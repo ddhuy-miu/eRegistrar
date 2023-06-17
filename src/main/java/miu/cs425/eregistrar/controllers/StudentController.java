@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -74,5 +71,16 @@ public class StudentController {
     public String deleteStudent(@PathVariable Integer studentId, Model model) {
         studentService.deleteStudent(studentId);
         return "redirect:/eregistra/student/list";
+    }
+
+    @GetMapping(value = {"/eregistra/student/search", "/student/search"})
+    public ModelAndView searchStudents(@RequestParam String searchString) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Student> students = studentService.searchStudents(searchString);
+        modelAndView.addObject("students", students);
+        modelAndView.addObject("searchString", searchString);
+        modelAndView.addObject("noStudents", students.size());
+        modelAndView.setViewName("student/list");
+        return modelAndView;
     }
 }

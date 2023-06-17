@@ -15,4 +15,6 @@ public interface StudentService {
     void deleteStudent(Integer studentId);
 
     void deleteStudent(Student student);
+
+    List<Student> searchStudents(String searchQuery);
 }

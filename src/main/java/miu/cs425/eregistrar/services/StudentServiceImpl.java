@@ -5,6 +5,7 @@ import miu.cs425.eregistrar.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,4 +42,26 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudent(Student student) {
         repository.delete(student);
     }
+
+    @Override
+    public List<Student> searchStudents(String searchQuery) {
+        int studentId = 0;
+        if (isStudentId(searchQuery)) {
+            studentId = Integer.parseInt(searchQuery);
+        }
+        return repository.findStudentByStudentIdOrFirstNameOrMiddleNameOrLastName(studentId, searchQuery, searchQuery, searchQuery);
+    }
+
+    private boolean isStudentId(String searchString) {
+        boolean isParseableAsStudentId;
+        try {
+            Integer.parseInt(searchString);
+            isParseableAsStudentId = true;
+        } catch (NumberFormatException e) {
+            isParseableAsStudentId = false;
+        }
+        return isParseableAsStudentId;
+    }
+
+
 }
